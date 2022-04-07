@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup as BS
 
 #Запуск
 
-print ("Бот запущени")
+print ("Бот запущений")
 
 #Змінні
 
@@ -20,7 +20,7 @@ city = ''
 @bot.message_handler (content_types=['text'])
 def b (message):
     if message.text == 'Путін':
-        bot.reply_to(message, 'ХУЙЛО!')
+        bot.reply_to(message, 'КОНЧЕНИЙ!')
 
     #Інформація про Юзера
 
