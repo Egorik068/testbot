@@ -3,6 +3,7 @@
 import telebot
 import requests
 from bs4 import BeautifulSoup as BS
+import time
 
 #Запуск
 
@@ -21,6 +22,8 @@ city = ''
 def b (message):
     if message.text == 'Путін':
         bot.reply_to(message, 'КОНЧЕНИЙ!')
+        time.sleep(2)
+        bot.send_sticker(message.chat.id, 'CAACAgIAAxkBAAEEZS5iTiHioxvQHOzRv-63xOLOSjQsUAACFQADDjpEJlqB3UqNRBwCIwQ')
 
     #Інформація про Юзера
 
