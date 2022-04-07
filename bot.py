@@ -12,7 +12,7 @@ print ("Бот запущений")
 
 #Змінні
 
-bot = telebot.TeleBot('5101895600:AAGJyHn0GFtQEVlcxYHP3ptOV1X8NV0_qQA')
+bot = telebot.TeleBot('5113147431:AAGA6l6jT4E1cRX9S2Sbs32I9cXY51XZJ6M')
 
 city = ''
 
