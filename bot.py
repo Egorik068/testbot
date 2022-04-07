@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup as BS
 
 #Запуск
 
-print ("Бот запущений")
+print ("Бот запущени")
 
 #Змінні
 
