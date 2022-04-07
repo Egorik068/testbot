@@ -4,6 +4,7 @@ import telebot
 import requests
 from bs4 import BeautifulSoup as BS
 import time
+from telebot import apihelper
 
 #Запуск
 
@@ -11,10 +12,9 @@ print ("Бот запущений")
 
 #Змінні
 
-bot = telebot.TeleBot('5113147431:AAGA6l6jT4E1cRX9S2Sbs32I9cXY51XZJ6M')
+bot = telebot.TeleBot('5101895600:AAGJyHn0GFtQEVlcxYHP3ptOV1X8NV0_qQA')
 
 city = ''
-
 
 #Діалог
 
@@ -22,8 +22,18 @@ city = ''
 def b (message):
     if message.text == 'Путін':
         bot.reply_to(message, 'КОНЧЕНИЙ!')
-        time.sleep(2)
+        time.sleep(1)
         bot.send_sticker(message.chat.id, 'CAACAgIAAxkBAAEEZS5iTiHioxvQHOzRv-63xOLOSjQsUAACFQADDjpEJlqB3UqNRBwCIwQ')
+    if message.text == "кік":
+        idd = message.reply_to_message.from_user.id
+        bot.kick_chat_member(message.chat.id, idd)
+    if message.text == 'Юзерс':
+        pars = bot.get_chat_members_count(message.chat.id)
+        bot.send_message(message.chat.id, pars)
+    if message.text == 'ID':
+        chat = message.chat.id
+        bot.send_message(message.chat.id, chat)
+
 
     #Інформація про Юзера
 
