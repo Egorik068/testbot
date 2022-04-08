@@ -24,9 +24,6 @@ def b (message):
         bot.reply_to(message, 'КОНЧЕНИЙ!')
         time.sleep(1)
         bot.send_sticker(message.chat.id, 'CAACAgIAAxkBAAEEZS5iTiHioxvQHOzRv-63xOLOSjQsUAACFQADDjpEJlqB3UqNRBwCIwQ')
-    if message.text == "кік":
-        idd = message.reply_to_message.from_user.id
-        bot.kick_chat_member(message.chat.id, idd)
     if message.text == 'Юзерс':
         pars = bot.get_chat_members_count(message.chat.id)
         bot.send_message(message.chat.id, pars)
