@@ -9,7 +9,7 @@ from pathlib import Path
 
 bot = telebot.TeleBot(config.token)
 
-#новий юзер
+#
 
 @bot.message_handler(content_types=['new_chat_members'])
 def delete_jf(message):
@@ -21,7 +21,7 @@ def delete_jf(message):
         users_ban = banned.read()
     bot.kick_chat_member(message.chat.id, users_ban)
 
-#бан
+#
 
 @bot.message_handler(commands=['ban'])
 def bans(message):
@@ -42,7 +42,7 @@ def bans(message):
     else:
         bot.reply_to(message, "В тебе нема прав банити людей :(")
 
-#кік
+#
 
 @bot.message_handler(commands=['kick'])
 def adm (message):
@@ -57,7 +57,7 @@ def adm (message):
            else:
                bot.reply_to(message, "В тебе нема прав виганяти людей :(")
 
-#рп
+#
 
 @bot.message_handler(content_types=['text'])
 def msg(message):
@@ -93,28 +93,17 @@ def msg(message):
             if message.text.lower() == "погладити":
                 bot.send_message(message.chat.id, f"🥰☺️| [{a}](tg://user?id={b}) погладив [{c}](tg://user?id={d})", parse_mode='Markdown')
     uim = message.from_user.id
-    with open("ADMINS.txt", "r") as file:
-        content = file.read()
     text = message.text
     adms = bot.get_chat_member(chat_id=message.chat.id, user_id=message.from_user.id)
     adms = adms.status
     if adms == "creator" or adms == "administrator":
         if message.reply_to_message:
-            if message.text == 'Додати':
-                id = message.from_user.id
-                chat_id = message.reply_to_message.from_user.id
-                print(message.from_user.username)
-                file_name = "ADMINS.txt"
-                print(file_name)
-                adm = open(file_name, 'a')
-                adm.write(str(chat_id) + '\n')
-                adm.close()
             if message.text == 'Розбан':
                 reprosban = message.reply_to_message.id
                 Path('BANS.txt').write_text(Path('BANS.txt').read_text().replace('5120511081', ''))
                 bot.reply_to(message, 'Юзер розбанений!')
 
-#чекає чи є порушення між людьми
+#
 
     if message.text == 'Чек':
         with open('BANS.txt', 'r') as banned:
