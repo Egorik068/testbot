@@ -1,88 +1,160 @@
-#Імпорти
-
 import telebot
+import re
+import config
+import os
+import traceback
 import requests
 from bs4 import BeautifulSoup as BS
-import time
-from telebot import apihelper
+from pathlib import Path
 
-#Запуск
+bot = telebot.TeleBot(config.token)
 
-print ("Бот запущений")
+#новий юзер
 
-#Змінні
+@bot.message_handler(content_types=['new_chat_members'])
+def delete_jf(message):
+    bot.delete_message(message.chat.id, message.message_id)
+    usbn = message.from_user.id
+    with open('USERS.txt', 'a') as new_users:
+        new_users.write(str(usbn) + "\n")
+    with open('BANS.txt', 'r') as banned:
+        users_ban = banned.read()
+    bot.kick_chat_member(message.chat.id, users_ban)
 
-bot = telebot.TeleBot('5113147431:AAGA6l6jT4E1cRX9S2Sbs32I9cXY51XZJ6M')
+#бан
 
-city = ''
-
-#Діалог
-
-@bot.message_handler (content_types=['text'])
-def b (message):
-    if message.text == 'Путін':
-        bot.reply_to(message, 'КОНЧЕНИЙ!')
-        time.sleep(1)
-        bot.send_sticker(message.chat.id, 'CAACAgIAAxkBAAEEZS5iTiHioxvQHOzRv-63xOLOSjQsUAACFQADDjpEJlqB3UqNRBwCIwQ')
-    if message.text == 'Юзерс':
-        pars = bot.get_chat_members_count(message.chat.id)
-        bot.send_message(message.chat.id, pars)
-    if message.text == 'ID':
-        chat = message.chat.id
-        bot.send_message(message.chat.id, chat)
-
-
-    #Інформація про Юзера
-
-    user_message = message.text
-    user_name = message.from_user.first_name
-    user_last_name = message.from_user.last_name
-    user_nickname = message.from_user.username
-
-    #Шпійонство
-
-    if user_last_name:
-        print(user_name,user_last_name,"(",user_nickname,")",": ",user_message)
+@bot.message_handler(commands=['ban'])
+def bans(message):
+    banik = message.text
+    uimb = message.from_user.id
+    adm = bot.get_chat_member(chat_id=message.chat.id, user_id=message.from_user.id)
+    adm = adm.status
+    if adm == "creator" or adm == "administrator":
+        if message.reply_to_message:
+            chat_ids = message.reply_to_message.from_user.id
+            tt = message.text
+            id_ban = message.reply_to_message.from_user.id
+            bot.ban_chat_member(message.chat.id, id_ban, 222222222222222222)
+            with open('BANS.txt', 'a') as banned:
+                    banned.write(str(id_ban) + "\n")
+        if message.reply_to_message is None:
+            return bot.reply_to(message, "Вам потрібно відповісти на повідомлення людини, яку хочете забанити :)")
     else:
-        print(user_name,"( @",user_nickname,")"": ",user_message)
+        bot.reply_to(message, "В тебе нема прав банити людей :(")
 
+#кік
 
-    #Введіть Місто
+@bot.message_handler(commands=['kick'])
+def adm (message):
+           adm = bot.get_chat_member(chat_id=message.chat.id, user_id=message.from_user.id)
+           adm = adm.status
+           if adm == "creator" or adm == "administrator":
+               if message.reply_to_message:
+                   id_kik = message.reply_to_message.from_user.id
+                   bot.kick_chat_member(message.chat.id, id_kik)
+               else:
+                    bot.reply_to(message, "Вам потрібно відповісти на повідомлення людини, яку хочете кікнути :)")
+           else:
+               bot.reply_to(message, "В тебе нема прав виганяти людей :(")
+
+#рп
+
+@bot.message_handler(content_types=['text'])
+def msg(message):
+    if message.reply_to_message:
+            a = message.from_user.first_name
+            b = message.from_user.id
+            d = message.reply_to_message.from_user.id
+            c = message.reply_to_message.from_user.first_name
+
+            if message.text.lower() == "вдарити":
+                bot.send_message(message.chat.id, f"😵‍💫🥊| [{a}](tg://user?id={b}) вдарив [{c}](tg://user?id={d})", parse_mode='Markdown')
+
+            if message.text.lower() == "облизати":
+                bot.send_message(message.chat.id, f"😋🤤| [{a}](tg://user?id={b}) облизав [{c}](tg://user?id={d})", parse_mode='Markdown')
+
+            if message.text.lower() == "покормити":
+                bot.send_message(message.chat.id, f"🍪🥞| [{a}](tg://user?id={b}) покормив [{c}](tg://user?id={d})", parse_mode='Markdown')
+
+            if message.text.lower() == "обняти":
+                bot.send_message(message.chat.id, f"☺️🤗| [{a}](tg://user?id={b}) обняв [{c}](tg://user?id={d})", parse_mode='Markdown')
+
+            if message.text.lower() == "з'їсти":
+                bot.send_message(message.chat.id, f"👩‍🍳🦃| [{a}](tg://user?id={b}) з'їв [{c}](tg://user?id={d})", parse_mode='Markdown')
+
+            if message.text.lower() == "вкусити":
+                bot.send_message(message.chat.id, f"🤨😬| [{a}](tg://user?id={b}) вкусив [{c}](tg://user?id={d})", parse_mode='Markdown')
+            if message.text.lower() == "вбити":
+                bot.send_message(message.chat.id, f"😡🔪| [{a}](tg://user?id={b}) вбив [{c}](tg://user?id={d})", parse_mode='Markdown')
+
+            if message.text.lower() == "каструвати":
+                bot.send_message(message.chat.id, f"🥚🐣| [{a}](tg://user?id={b}) кастрував [{c}](tg://user?id={d})", parse_mode='Markdown')
+
+            if message.text.lower() == "погладити":
+                bot.send_message(message.chat.id, f"🥰☺️| [{a}](tg://user?id={b}) погладив [{c}](tg://user?id={d})", parse_mode='Markdown')
+    uim = message.from_user.id
+    with open("ADMINS.txt", "r") as file:
+        content = file.read()
+    text = message.text
+    adms = bot.get_chat_member(chat_id=message.chat.id, user_id=message.from_user.id)
+    adms = adms.status
+    if adms == "creator" or adms == "administrator":
+        if message.reply_to_message:
+            if message.text == 'Додати':
+                id = message.from_user.id
+                chat_id = message.reply_to_message.from_user.id
+                print(message.from_user.username)
+                file_name = "ADMINS.txt"
+                print(file_name)
+                adm = open(file_name, 'a')
+                adm.write(str(chat_id) + '\n')
+                adm.close()
+            if message.text == 'Розбан':
+                reprosban = message.reply_to_message.id
+                Path('BANS.txt').write_text(Path('BANS.txt').read_text().replace('5120511081', ''))
+                bot.reply_to(message, 'Юзер розбанений!')
+
+#чекає чи є порушення між людьми
+
+    if message.text == 'Чек':
+        with open('BANS.txt', 'r') as banned:
+            users_ban = banned.read()
+        bot.kick_chat_member(message.chat.id, users_ban)
+
 
     if message.text.lower() == 'погода':
-       bot.reply_to(message, 'Будь ласка, введіть місто, погоду у якому ви хочете дізнатися')
+        bot.reply_to(message, 'Будь ласка, введіть місто, погоду у якому ви хочете дізнатися')
 
     else:
 
-       #Перетворення
+           #Перетворення
 
-       city = message.text
-       split = city.split()
-       city_ok = '-'.join(split)
+        city = message.text
+        split = city.split()
+        city_ok = '-'.join(split)
 
-       #Запрос
+           #Запрос
 
-       url = 'https://ua.sinoptik.ua/погода-' + city_ok
-       r = requests.get(url)
-       html = BS(r.content, 'html.parser')
+        url = 'https://ua.sinoptik.ua/погода-' + city_ok
+        r = requests.get(url)
+        html = BS(r.content, 'html.parser')
 
-      #Пошук
+          #Пошук
 
-       for el in html.select('#content'):
-           t_min = el.select('.temperature .min')[0].text
-           t_max = el.select('.temperature .max')[0].text
-           text = el.select('.wDescription .description')[0].text
+        for el in html.select('#content'):
+            t_min = el.select('.temperature .min')[0].text
+            t_max = el.select('.temperature .max')[0].text
+            text = el.select('.wDescription .description')[0].text
 
-       #Антикраш
+           #Антикраш
 
-       valid = requests.get(url)
+        valid = requests.get(url)
 
-       if 'Погода' in user_message:
-           if valid:
-               bot.reply_to(message, text + '\n \n' + "Температура: " + t_min + ", " + t_max)
-           else:
-               bot.reply_to(message, "Вибачте, але я не знаю такого міста :(")
+        if 'Погода' in message.text:
+            if valid:
+                bot.reply_to(message, text + '\n \n' + "Температура: " + t_min + ", " + t_max)
+            else:
+                bot.reply_to(message, "Вибачте, але я не знаю такого міста :(")
 
-#Цикл
 
 bot.polling(none_stop=True)
