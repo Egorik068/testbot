@@ -61,6 +61,25 @@ def adm (message):
 
 @bot.message_handler(content_types=['text'])
 def msg(message):
+    if message.text == 'РП':
+        bot.reply_to(message, '''
+в нас є такі команди як:
+/kick - для адміністраторів чату
+/ban - для адміністраторів чату
+і всякі приколюхи по типу:
+1)вдарити  10)уєбати
+2)облизати  11)обісрати
+3)покормити  12)виєбати
+4)обняти
+5)зїсти
+6)вкусити
+7)вбити
+8)каструвати
+9)погладити
+Ще у нас є унікальна команда завдяки якій ви можете дізнатися погоду в свому місті!!
+Погода і ваше місто :)
+приклад: Погода львів
+        ''')
     if message.reply_to_message:
             a = message.from_user.first_name
             b = message.from_user.id
@@ -79,11 +98,12 @@ def msg(message):
             if message.text.lower() == "обняти":
                 bot.send_message(message.chat.id, f"☺️🤗| [{a}](tg://user?id={b}) обняв [{c}](tg://user?id={d})", parse_mode='Markdown')
 
-            if message.text.lower() == "з'їсти":
+            if message.text.lower() == "зїсти":
                 bot.send_message(message.chat.id, f"👩‍🍳🦃| [{a}](tg://user?id={b}) з'їв [{c}](tg://user?id={d})", parse_mode='Markdown')
 
             if message.text.lower() == "вкусити":
                 bot.send_message(message.chat.id, f"🤨😬| [{a}](tg://user?id={b}) вкусив [{c}](tg://user?id={d})", parse_mode='Markdown')
+
             if message.text.lower() == "вбити":
                 bot.send_message(message.chat.id, f"😡🔪| [{a}](tg://user?id={b}) вбив [{c}](tg://user?id={d})", parse_mode='Markdown')
 
@@ -92,7 +112,16 @@ def msg(message):
 
             if message.text.lower() == "погладити":
                 bot.send_message(message.chat.id, f"🥰☺️| [{a}](tg://user?id={b}) погладив [{c}](tg://user?id={d})", parse_mode='Markdown')
-    uim = message.from_user.id
+
+            if message.text.lower() == "уєбати":
+                bot.send_message(message.chat.id, f"😡👊| [{a}](tg://user?id={b}) уєбав [{c}](tg://user?id={d})", parse_mode='Markdown')
+
+            if message.text.lower() == "обісрати":
+                bot.send_message(message.chat.id, f"🤭💩| [{a}](tg://user?id={b}) обісрати [{c}](tg://user?id={d})", parse_mode='Markdown')
+
+            if message.text.lower() == "виєбати":
+                bot.send_message(message.chat.id, f"👉👌😬| [{a}](tg://user?id={b}) змусив до жорсткого інтиму [{c}](tg://user?id={d})", parse_mode='Markdown')
+
     text = message.text
     adms = bot.get_chat_member(chat_id=message.chat.id, user_id=message.from_user.id)
     adms = adms.status
@@ -103,12 +132,12 @@ def msg(message):
                 Path('BANS.txt').write_text(Path('BANS.txt').read_text().replace('5120511081', ''))
                 bot.reply_to(message, 'Юзер розбанений!')
 
-#
+#Чек чи є у нас порушники
 
-    if message.text == 'Чек':
-        with open('BANS.txt', 'r') as banned:
-            users_ban = banned.read()
-        bot.kick_chat_member(message.chat.id, users_ban)
+        if message.text == 'Чек':
+            with open('BANS.txt', 'r') as banned:
+                users_ban = banned.read()
+            bot.kick_chat_member(message.chat.id, users_ban)
 
 
     if message.text.lower() == 'погода':
